@@ -1,4 +1,4 @@
-# AuthServer
+# Authorization Server
 Auth2.0 Custom Authorization server built with spring-security-authorization server support.
 
 # Dependency
