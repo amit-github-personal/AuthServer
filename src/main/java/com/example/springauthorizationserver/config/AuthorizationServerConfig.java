@@ -29,7 +29,7 @@ import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
 
-@Configuration(proxyBeanMethods = false)
+@Configuration
 public class AuthorizationServerConfig {
 
     @Bean
