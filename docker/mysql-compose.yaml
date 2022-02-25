@@ -13,6 +13,6 @@ services:
     expose:
       - '3306'
     volumes:
-      - ./my-db:/var/lib/mysql
+      - ./my-db:/var/lib/mysql/authorization_server/
 volumes:
   my-db:
