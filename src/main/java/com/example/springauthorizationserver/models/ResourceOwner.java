@@ -16,18 +16,30 @@ import javax.persistence.Id;
 * @Author Amit Mishra
 * */
 @Entity
-public class ResourceOwner extends User {
+public class ResourceOwner {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    public ResourceOwner(String username, String password, String...roles) {
-        super(username, password, SecurityUtil.toGrantedAuthority(roles));
+    private String username;
+
+    private String hashedPassword;
+
+    public String getUsername() {
+        return username;
     }
 
-    public ResourceOwner() {
-        super(null, null, null);
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getHashedPassword() {
+        return hashedPassword;
+    }
+
+    public void setHashedPassword(String hashedPassword) {
+        this.hashedPassword = hashedPassword;
     }
 
     public long getId() {
