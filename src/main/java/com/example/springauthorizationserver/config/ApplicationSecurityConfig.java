@@ -21,7 +21,9 @@ public class ApplicationSecurityConfig {
                 .authorizeRequests(authorizeRequests ->
                         authorizeRequests.anyRequest().authenticated()
                 )
-                .formLogin(withDefaults());
+                .formLogin(withDefaults()).httpBasic();
+
+        http.csrf().disable();
         return http.build();
     }
 
