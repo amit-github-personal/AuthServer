@@ -1,4 +1,4 @@
-package com.example.springauthorizationserver.config;
+package com.example.springauthorizationserver.config.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -10,18 +10,26 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
-import static org.springframework.security.config.Customizer.withDefaults;
-
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class ApplicationSecurityConfig {
+
     @Bean
     SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests(authorizeRequests ->
-                        authorizeRequests.anyRequest().authenticated()
+                        authorizeRequests
+                                .antMatchers("/html/**", "/css/**").permitAll()
+                                .anyRequest().authenticated()
                 )
-                .formLogin(withDefaults());
+
+                .formLogin(loginCustomizer ->
+                        loginCustomizer.loginPage("/api/authentication/login").permitAll()
+                                .loginProcessingUrl("/auth/processing")
+                                .failureUrl("/api/authentication/failure")
+                );
+
+
         return http.build();
     }
 
@@ -34,6 +42,5 @@ public class ApplicationSecurityConfig {
                 .build();
         return new InMemoryUserDetailsManager(user);
     }
-
 
 }

@@ -1,4 +1,4 @@
-package com.example.springauthorizationserver.controllers;
+package com.example.springauthorizationserver.controllers.client;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
