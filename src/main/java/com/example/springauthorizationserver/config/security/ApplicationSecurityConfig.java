@@ -16,21 +16,41 @@ public class ApplicationSecurityConfig {
 
     @Bean
     SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
-        http
+        //Support GET logout
+        http.csrf().disable();
+
+        //Form Login And Http Security Config
+        configureFormLogin(http);
+
+        //Logout Configuration
+        configureLogout(http);
+
+        return http.build();
+    }
+
+    private HttpSecurity configureFormLogin(HttpSecurity http) throws Exception {
+        return http
                 .authorizeRequests(authorizeRequests ->
                         authorizeRequests
                                 .antMatchers("/html/**", "/css/**").permitAll()
                                 .anyRequest().authenticated()
                 )
-
                 .formLogin(loginCustomizer ->
                         loginCustomizer.loginPage("/api/authentication/login").permitAll()
                                 .loginProcessingUrl("/auth/processing")
                                 .failureUrl("/api/authentication/failure")
                 );
+    }
 
-
-        return http.build();
+    private void configureLogout(HttpSecurity http) throws Exception {
+        http
+                .logout(logoutConfigurer ->
+                        logoutConfigurer.logoutUrl("/api/authentication/logout")
+                                .deleteCookies("JSESSIONID")
+                                .invalidateHttpSession(true)
+                                .logoutSuccessUrl("/api/authentication/login")
+                                .clearAuthentication(true)
+                );
     }
 
     @Bean
