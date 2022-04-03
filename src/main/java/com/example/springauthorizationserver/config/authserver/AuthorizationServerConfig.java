@@ -1,4 +1,4 @@
-package com.example.springauthorizationserver.config;
+package com.example.springauthorizationserver.config.authserver;
 
 import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.jwk.JWKSet;

@@ -1,4 +1,4 @@
-package com.example.springauthorizationserver.controllers;
+package com.example.springauthorizationserver.controllers.client;
 
 import com.example.springauthorizationserver.proxy.RegisteredClientProxy;
 import org.springframework.beans.factory.annotation.Autowired;
