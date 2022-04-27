@@ -32,7 +32,7 @@ public class ApplicationSecurityConfig {
         return http
                 .authorizeRequests(authorizeRequests ->
                         authorizeRequests
-                                .antMatchers("/html/**", "/css/**").permitAll()
+                                .antMatchers("/html/**", "/css/**", "/js/**").permitAll()
                                 .anyRequest().authenticated()
                 )
                 .formLogin(loginCustomizer ->
