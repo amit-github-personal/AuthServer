@@ -5,29 +5,49 @@
 </head>
 <body>
 
-<nav class="navbar navbar-expand-lg navbar-light bg-light" th:fragment="header">
-    <div class="container-fluid">
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="#">Home</a>
+<!-- Navbar Light -->
+<nav class="navbar navbar-expand-lg navbar-light bg-white z-index-3 py-3" th:fragment="header">
+    <div class="container">
+        <a class="navbar-brand" href="" rel="tooltip" title="Designed and Coded by Creative Tim" data-placement="bottom" target="_blank">
+            Community Authorization Server
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation" aria-controls="navigation" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navigation">
+            <ul class="navbar-nav navbar-nav-hover mx-auto">
+                <li class="nav-item px-3">
+                    <a class="nav-link">
+                        Pages
+                    </a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Home</a>
+
+                <li class="nav-item px-3">
+                    <a class="nav-link">
+                        Utilities
+                    </a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Applications</a>
+
+                <li class="nav-item px-3" th:if="${#authorization.expression('!isAuthenticated()')}">
+                    <a class="nav-link" href="/api/authentication/login" th:href="@{/api/authentication/login}">
+                        Login
+                    </a>
                 </li>
-                <li class="nav-item" th:if="${#authorization.expression('!isAuthenticated()')}">
-                    <a class="nav-link" href="/api/authentication/login" th:href="@{/api/authentication/login}">Login</a>
+
+                <li class="nav-item px-3" th:if="${#authorization.expression('isAuthenticated()')}">
+                    <a class="nav-link " href="/api/authentication/logout" th:href="@{/api/authentication/logout}">
+                        Logout
+                    </a>
                 </li>
-                <li class="nav-item" th:if="${#authorization.expression('isAuthenticated()')}">
-                    <a class="nav-link" href="/api/authentication/logout" th:href="@{/api/authentication/logout}">Logout</a>
-                </li>
+            </ul>
+
+            <ul class="navbar-nav ms-auto">
+                <button class="btn bg-gradient-primary mb-0">Buy Now</button>
             </ul>
         </div>
     </div>
 </nav>
+<!-- End Navbar -->
 </body>
 
 </html>
