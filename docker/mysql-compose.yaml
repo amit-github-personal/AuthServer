@@ -1,7 +1,7 @@
 version: '3.3'
 services:
   db:
-    image: mysql:8.0.1
+    image: mysql:8.0.29-debian
     restart: always
     environment:
       MYSQL_DATABASE: 'authorization_server'
@@ -12,7 +12,3 @@ services:
       - '3306:3306'
     expose:
       - '3306'
-    volumes:
-      - ./:/var/lib/mysql/authorization_server/
-volumes:
-  my-db:
