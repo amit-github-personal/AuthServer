@@ -16,13 +16,11 @@ import java.util.List;
  *
  * @Author Amit Mishra
  * */
-@Entity @Data
+@Data
 @AllArgsConstructor @NoArgsConstructor
 @Builder
 public class ResourceOwner {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     private String username;

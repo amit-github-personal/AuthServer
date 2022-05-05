@@ -27,6 +27,47 @@ CREATE TABLE IF NOT EXISTS oauth2_authorization
     PRIMARY KEY (id)
 );
 
+CREATE TABLE IF NOT EXISTS oauth2_authorization_consent
+(
+    registered_client_id varchar(100)  NOT NULL,
+    principal_name       varchar(200)  NOT NULL,
+    authorities          varchar(1000) NOT NULL,
+    PRIMARY KEY (registered_client_id, principal_name)
+);
+
+CREATE TABLE IF NOT EXISTS resource_owner_roles (
+      id       int  NOT NULL,
+      name     varchar(100) NOT NULL,
+      PRIMARY KEY(id)
+);
+
+CREATE TABLE IF NOT EXISTS workspace (
+    workspace_id int NOT NULL,
+    workspace_name varchar(1000) NOT NULL,
+    workspace_owner_id int(100) REFERENCES resource_owner(resource_owner_id),
+    PRIMARY KEY (workspace_id)
+);
+
+CREATE TABLE IF NOT EXISTS resource_owner (
+    resource_owner_id int           NOT NULL,
+    username          varchar(1000) NOT NULL,
+    hashedPassword    varchar(1000) NOT NULL,
+    enabled           BIT           default 0,
+    locked            BIT           default 0,
+    deleted           BIT           default 0,
+    workspace_id      int           NOT NULL,
+    FOREIGN KEY(workspace_id) REFERENCES workspace(workspace_id),
+    PRIMARY KEY(resource_owner_id)
+);
+
+CREATE TABLE IF NOT EXISTS resource_owner_roles_mapping (
+    resource_owner_id int  NOT NULL,
+    role_id           int  NOT NULL,
+    FOREIGN KEY(resource_owner_id) REFERENCES resource_owner(resource_owner_id),
+    FOREIGN KEY(role_id) REFERENCES resource_owner_roles(id),
+    UNIQUE(role_id, resource_owner_id)
+);
+
 CREATE TABLE IF NOT EXISTS oauth2_registered_client
 (
     id                            varchar(100)                            NOT NULL,
@@ -41,13 +82,18 @@ CREATE TABLE IF NOT EXISTS oauth2_registered_client
     scopes                        varchar(1000)                           NOT NULL,
     client_settings               varchar(2000)                           NOT NULL,
     token_settings                varchar(2000)                           NOT NULL,
+    client_owner_id               int(100)                             NOT NULL,
+    FOREIGN KEY(client_owner_id)  REFERENCES resource_owner(resource_owner_id),
     PRIMARY KEY (id)
 );
 
-CREATE TABLE IF NOT EXISTS oauth2_authorization_consent
-(
-    registered_client_id varchar(100)  NOT NULL,
-    principal_name       varchar(200)  NOT NULL,
-    authorities          varchar(1000) NOT NULL,
-    PRIMARY KEY (registered_client_id, principal_name)
-);
+
+INSERT INTO workspace(workspace_id, workspace_name, workspace_owner_id) VALUES( 1, "master", 1);
+
+INSERT INTO resource_owner(resource_owner_id, username, hashedPassword, enabled, locked, deleted, workspace_id)
+    VALUES(1, "admin", "admin", true, false, false, 1);
+
+
+INSERT INTO resource_owner_roles(id, name) VALUES(1, "APP_ADMIN");
+
+INSERT INTO resource_owner_roles_mapping(resource_owner_id, role_id) VALUES(1, 1);
