@@ -1,7 +1,9 @@
 package com.github.community.authserver.util;
 
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.util.Arrays;
 import java.util.List;
@@ -16,5 +18,9 @@ public class SecurityUtil {
     public static List<GrantedAuthority> toGrantedAuthority(String...roles) {
         return Arrays.asList(roles).stream().map(role -> new SimpleGrantedAuthority(role))
                 .collect(Collectors.toList());
+    }
+
+    public static Authentication getThisAuthentication() {
+        return SecurityContextHolder.getContext ().getAuthentication ();
     }
 }

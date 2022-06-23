@@ -36,20 +36,41 @@ CREATE TABLE IF NOT EXISTS oauth2_authorization_consent
 );
 
 CREATE TABLE IF NOT EXISTS resource_owner_roles (
-      id       int  NOT NULL,
+      id       int  NOT NULL AUTO_INCREMENT,
       name     varchar(100) NOT NULL,
       PRIMARY KEY(id)
 );
 
+CREATE TABLE IF NOT EXISTS application_user (
+    user_id int NOT NULL AUTO_INCREMENT ,
+    username varchar (40) NOT NULL ,
+    password varchar (1000) NOT NULL,
+    PRIMARY KEY (user_id)
+);
+
+CREATE TABLE IF NOT EXISTS application_user_roles (
+    role_id int NOT NULL  AUTO_INCREMENT,
+    role_name varchar (40) NOT NULL,
+    PRIMARY KEY (role_id)
+);
+
+CREATE TABLE IF NOT EXISTS application_user_roles_mapping (
+    application_role_id int NOT NULL,
+    application_user_id int NOT NULL,
+    FOREIGN KEY (application_role_id) REFERENCES application_user_roles(role_id),
+    FOREIGN KEY (application_user_id) REFERENCES application_user(user_id)
+);
+
+
 CREATE TABLE IF NOT EXISTS workspace (
-    workspace_id int NOT NULL,
+    workspace_id int NOT NULL AUTO_INCREMENT,
     workspace_name varchar(1000) NOT NULL,
     workspace_owner_id int(100) REFERENCES resource_owner(resource_owner_id),
     PRIMARY KEY (workspace_id)
 );
 
 CREATE TABLE IF NOT EXISTS resource_owner (
-    resource_owner_id int           NOT NULL,
+    resource_owner_id int           NOT NULL AUTO_INCREMENT,
     username          varchar(1000) NOT NULL,
     hashedPassword    varchar(1000) NOT NULL,
     enabled           BIT           default 0,
@@ -64,8 +85,7 @@ CREATE TABLE IF NOT EXISTS resource_owner_roles_mapping (
     resource_owner_id int  NOT NULL,
     role_id           int  NOT NULL,
     FOREIGN KEY(resource_owner_id) REFERENCES resource_owner(resource_owner_id),
-    FOREIGN KEY(role_id) REFERENCES resource_owner_roles(id),
-    UNIQUE(role_id, resource_owner_id)
+    FOREIGN KEY(role_id) REFERENCES resource_owner_roles(id)
 );
 
 CREATE TABLE IF NOT EXISTS oauth2_registered_client
